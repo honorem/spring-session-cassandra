@@ -1,6 +1,6 @@
 # spring-session-cassandra
 
-Spring session implementation with Couchbase as backend
+Spring session implementation with Cassandra as backend
 
 inspired by [cambierr/spring-session-couchbase](https://github.com/cambierr/spring-session-couchbase)
 
