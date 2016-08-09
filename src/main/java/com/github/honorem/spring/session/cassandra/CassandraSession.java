@@ -44,35 +44,44 @@ import org.springframework.session.ExpiringSession;
 @Table("cassandra_session")
 public class CassandraSession implements ExpiringSession {
 
+    //The default validity of a session (in s)
     public static final int SESSION_DEFAULT_VALIDITY = 1800;
 
+    //The validity of this session
     protected static int SESSION_VALIDITY = SESSION_DEFAULT_VALIDITY;
 
+    //the id of the session used as a primary key
     @PrimaryKeyColumn(name = "id", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private String id;
+    //the interval beetwen which the session is valid
     private int interval;
+    //the time of creation of the session
     private long created;
+    //the last time the session has been accessed
     private long accessed;
+    //the data in the session
     private Map<String, String> data;
-
     
-    
+    //update default session validity
     public static void setSessionValidity(int validity) {
         SESSION_VALIDITY = validity;
     }
-
+    
+    //constructor used by cassandra session repository
     public CassandraSession() {
         this(SESSION_DEFAULT_VALIDITY);
     }
 
+    //constructor used to delete a session
     public CassandraSession(String id) {
         this.id = id;
     }
 
+    //constructor used by cassandra session repository
     public CassandraSession(int interval) {
         this(UUID.randomUUID().toString(), interval);
     }
-
+    //constructor used by cassandra session repository
     public CassandraSession(String _id, int interval) {
         this.id = _id;
         this.interval = interval;
@@ -154,6 +163,12 @@ public class CassandraSession implements ExpiringSession {
         this.data.remove(attributeName);
     }
 
+    /**
+     * Serialize object as base64 encoded String
+     * 
+     * @param _object The object to serialize
+     * @return The serialized object
+     */
     private String serialize(Object _object) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -166,6 +181,12 @@ public class CassandraSession implements ExpiringSession {
         }
     }
 
+    /**
+     * Deserialize base64 encoded object 
+     * 
+     * @param _serialized The object serialized
+     * @return The deserialized object
+     */
     private Object deserialize(String _serialized) {
         if (_serialized == null) {
             return null;
