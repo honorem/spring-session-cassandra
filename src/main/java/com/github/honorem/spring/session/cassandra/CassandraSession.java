@@ -128,7 +128,7 @@ public class CassandraSession implements ExpiringSession {
 
     @Override
     public <T> T getAttribute(String attributeName) {
-        if (!this.data.containsKey(attributeName)) {
+        if (this.data == null || !this.data.containsKey(attributeName)) {
             return null;
         }
         String o = this.data.get(attributeName);
