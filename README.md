@@ -13,7 +13,7 @@ Everything you need about Spring (documentation, issue management, support, samp
 In order to work properly, you must create a table named "cassandra_session" in your working keyspace as defined in you `AbstractCassandraConfiguration` implementation.
 Here is the table definition : 
 ```cql
-CREATE TABLE cassandra_session (
+CREATE TABLE cassandra_sessions (
     id text PRIMARY KEY,
     accessed bigint,
     created bigint,
@@ -21,3 +21,5 @@ CREATE TABLE cassandra_session (
     interval int
 ) 
 ```
+
+To enable the cassandra session use the annotation `@EnableCassandraHttpSession` in your main Spring Application class. By default, spring-cassandra-session use the table `casssandra_sessions` but you can edit this name by using `@EnableCassandraHttpSession(cassandraTableName = "your_table_name")`. Don't forget to update your cassandra table accordingly.
