@@ -57,7 +57,6 @@ public class CassandraHttpSessionConfiguration extends SpringHttpSessionConfigur
     public void setImportMetadata(AnnotationMetadata importMetadata) {
         AnnotationAttributes attributes = AnnotationAttributes.fromMap(importMetadata.getAnnotationAttributes(EnableCassandraHttpSession.class.getName()));
         CassandraSession.setSessionValidity(attributes.getNumber("maxInactiveIntervalInSeconds"));
-        System.out.println(attributes.getString("cassandraTableName"));
         cassandraSessionRepository.setTableName(attributes.getString("cassandraTableName"));
     }
 
