@@ -10,7 +10,7 @@ Everything you need about Spring (documentation, issue management, support, samp
 
 # Configuration
 
-In order to work properly, you must create a table named "cassandra_session" in your working keyspace as defined in you `AbstractCassandraConfiguration` implementation.
+In order to work properly, you must create a table named "cassandra_sessions" (see below to change this name) in your working keyspace as defined in you `AbstractCassandraConfiguration` implementation.
 Here is the table definition : 
 ```cql
 CREATE TABLE cassandra_sessions (
