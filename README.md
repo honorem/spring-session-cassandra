@@ -19,7 +19,7 @@ CREATE TABLE cassandra_sessions (
     created bigint,
     data map<text, text>,
     interval int
-) 
+);
 ```
 
 To enable the cassandra session use the annotation `@EnableCassandraHttpSession` in your main Spring Application class. By default, spring-cassandra-session use the table `casssandra_sessions` but you can edit this name by using `@EnableCassandraHttpSession(cassandraTableName = "your_table_name")`. Don't forget to update your cassandra table accordingly.
