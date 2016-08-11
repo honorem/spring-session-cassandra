@@ -23,3 +23,13 @@ CREATE TABLE cassandra_sessions (
 ```
 
 To enable the cassandra session use the annotation `@EnableCassandraHttpSession` in your main Spring Application class. By default, spring-cassandra-session use the table `casssandra_sessions` but you can edit this name by using `@EnableCassandraHttpSession(cassandraTableName = "your_table_name")`. Don't forget to update your cassandra table accordingly.
+
+# Maven
+If your are using maven, use the following dependency :
+```xml
+<dependency>
+    <groupId>com.github.honorem</groupId>
+    <artifactId>spring-session-cassandra</artifactId>
+    <version>0.2</version>
+</dependency>
+```
