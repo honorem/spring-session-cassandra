@@ -41,9 +41,11 @@ import org.springframework.session.ExpiringSession;
  *
  * @author Marc Honoré <marc@shareif.com>
  */
-@Table("cassandra_session")
+@Table
 public class CassandraSession implements ExpiringSession {
 
+    public static final String DEFAULT_TABLE_NAME = "cassandra_sessions";
+    
     //The default validity of a session (in s)
     public static final int SESSION_DEFAULT_VALIDITY = 1800;
 
@@ -200,5 +202,9 @@ public class CassandraSession implements ExpiringSession {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+    
+    public Map<String, String> getMetadata(){
+        return data;
     }
 }

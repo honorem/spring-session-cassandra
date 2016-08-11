@@ -25,6 +25,7 @@ package com.github.honorem.spring.session.cassandra.config.annotation.web.http;
 
 import com.github.honorem.spring.session.cassandra.CassandraSession;
 import com.github.honorem.spring.session.cassandra.CassandraSessionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
@@ -40,15 +41,24 @@ import org.springframework.session.config.annotation.web.http.SpringHttpSessionC
 @Configuration
 public class CassandraHttpSessionConfiguration extends SpringHttpSessionConfiguration implements ImportAware {
 
+    private final CassandraSessionRepository cassandraSessionRepository;
+    
+    @Autowired
+    public CassandraHttpSessionConfiguration(CassandraTemplate cassandraTemplate) {
+        cassandraSessionRepository = new CassandraSessionRepository(cassandraTemplate);
+    }
+    
     @Bean
-    public CassandraSessionRepository cassandraSessionRepository(CassandraTemplate cassandraTemplate) {
-        return new CassandraSessionRepository(cassandraTemplate);
+    public CassandraSessionRepository cassandraSessionRepository() {
+        return cassandraSessionRepository;
     }
 
     @Override
     public void setImportMetadata(AnnotationMetadata importMetadata) {
         AnnotationAttributes attributes = AnnotationAttributes.fromMap(importMetadata.getAnnotationAttributes(EnableCassandraHttpSession.class.getName()));
         CassandraSession.setSessionValidity(attributes.getNumber("maxInactiveIntervalInSeconds"));
+        System.out.println(attributes.getString("cassandraTableName"));
+        cassandraSessionRepository.setTableName(attributes.getString("cassandraTableName"));
     }
 
 }

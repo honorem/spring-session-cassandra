@@ -43,4 +43,5 @@ import org.springframework.context.annotation.Import;
 @Configuration
 public @interface EnableCassandraHttpSession {
     int maxInactiveIntervalInSeconds() default CassandraSession.SESSION_DEFAULT_VALIDITY;
+    String cassandraTableName() default CassandraSession.DEFAULT_TABLE_NAME;
 }

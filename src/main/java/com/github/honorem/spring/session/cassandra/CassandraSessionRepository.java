@@ -27,21 +27,29 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.session.SessionRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 /**
  *
  * @author Marc Honoré <marc@shareif.com>
  */
-public class CassandraSessionRepository implements SessionRepository<CassandraSession>{
+@Repository
+public class CassandraSessionRepository implements SessionRepository<CassandraSession> {
 
     private final CassandraTemplate cassandra;
-    
-    public CassandraSessionRepository(CassandraTemplate cassandra){
+
+    private String tableName;
+
+    public CassandraSessionRepository(CassandraTemplate cassandra) {
         Assert.notNull(cassandra);
         this.cassandra = cassandra;
     }
-    
+
+    public void setTableName(String _tableName) {
+        this.tableName = _tableName;
+    }
+
     @Override
     public CassandraSession createSession() {
         return new CassandraSession();
@@ -49,19 +57,19 @@ public class CassandraSessionRepository implements SessionRepository<CassandraSe
 
     @Override
     public void save(CassandraSession session) {
-        cassandra.insert(session);
+        cassandra.execute(CassandraTemplate.createInsertQuery(tableName, session, null, cassandra.getConverter()));
     }
 
     @Override
     public CassandraSession getSession(String id) {
-        Select select = QueryBuilder.select().all().from("cassandra_session");
+        Select select = QueryBuilder.select().all().from(tableName);
         select.where(QueryBuilder.eq("id", id));
         return cassandra.selectOne(select, CassandraSession.class);
     }
 
     @Override
     public void delete(String id) {
-        cassandra.delete(new CassandraSession(id));
+        cassandra.execute(CassandraTemplate.createDeleteQuery(tableName, new CassandraSession(id), null, cassandra.getConverter()));
     }
-    
+
 }
