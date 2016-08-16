@@ -143,6 +143,9 @@ public class CassandraSession implements ExpiringSession {
 
     @Override
     public void setAttribute(String attributeName, Object attributeValue) {
+        if(this.data == null){
+            this.data = new HashMap<>();
+        }
         if(this.data.getClass().getSimpleName().equals("UnmodifiableMap")){
             Map<String, String> map = new HashMap<>();
             this.data.keySet().stream().forEach((key) -> {
@@ -155,6 +158,10 @@ public class CassandraSession implements ExpiringSession {
 
     @Override
     public void removeAttribute(String attributeName) {
+        if(this.data == null){
+            this.data = new HashMap<>();
+            return;
+        }
         if(this.data.getClass().getSimpleName().equals("UnmodifiableMap")){
             Map<String, String> map = new HashMap<>();
             this.data.keySet().stream().forEach((key) -> {
